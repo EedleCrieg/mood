@@ -1,19 +1,14 @@
 from flask import Flask, request, render_template
 import os
-import sys
-
-# Add the CLIP repository to the Python path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'CLIP-main'))
-
 import torch
 from PIL import Image
-import clip  # Now this should work
+from transformers import BlipProcessor, BlipForConditionalGeneration
 
 app = Flask(__name__)
 
-# Load CLIP model and processor
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-B/32", device=device)  # Load the CLIP model
+# Load the BLIP model and processor
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
 # Set the upload folder
 UPLOAD_FOLDER = 'static/uploads'
@@ -37,19 +32,15 @@ def upload():
             img_path = os.path.join(UPLOAD_FOLDER, img.filename)
             img.save(img_path)
 
-            # Load the image
-            image = preprocess(Image.open(img_path)).unsqueeze(0).to(device)
+            # Load and preprocess the image
+            image = Image.open(img_path).convert("RGB")
 
-            # Generate description
-            text_inputs = clip.tokenize(["a photo of a "]).to(device)
-            with torch.no_grad():
-                image_features = model.encode_image(image)
-                text_features = model.encode_text(text_inputs)
+            # Preprocess the image and generate caption
+            inputs = processor(images=image, return_tensors="pt")
+            out = model.generate(**inputs)
+            description = processor.decode(out[0], skip_special_tokens=True)
 
-                logits_per_image = (image_features @ text_features.T).softmax(dim=-1)
-                description = f"This image is likely to be a photo of something with a score of {logits_per_image[0][0].item():.2f}."
-
-            descriptions.append({"filename": img.filename, "description": description})  # Include filename
+            descriptions.append({"filename": img.filename, "description": description})
 
     return {"descriptions": descriptions}
 

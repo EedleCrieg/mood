@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery with Local CLIP</title>
+    <title>Image Captioning with BLIP</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,8 +17,6 @@
             max-width: 800px;
             margin: 20px;
             text-align: left;
-            display: flex;
-            flex-direction: row;
         }
 
         h1 {
@@ -30,16 +28,6 @@
             flex-direction: column;
             align-items: flex-start;
             margin-top: 20px;
-            width: 50%; /* 50% width for the images column */
-        }
-
-        .descriptions {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-top: 20px;
-            width: 50%; /* 50% width for the descriptions column */
-            padding-left: 20px; /* Add some space between columns */
         }
 
         .gallery img {
@@ -69,24 +57,17 @@
 <body>
 
 <div class="container">
-    <div class="gallery" id="imageGallery"></div>
-    <div class="descriptions" id="descriptionGallery"></div>
-</div>
-
-<div class="container">
-    <h1>Image Gallery with Local CLIP</h1>
+    <h1>Image Captioning with BLIP</h1>
     <form id="uploadForm" method="post" enctype="multipart/form-data">
         <input type="file" id="imageUpload" name="images" multiple accept="image/*">
         <button type="submit" class="button">Upload Images</button>
-        <button type="button" id="describeButton" class="button" style="display: none;">Generate Descriptions</button>
     </form>
+    <div class="gallery" id="imageGallery"></div>
 </div>
 
 <script>
     const uploadForm = document.getElementById('uploadForm');
     const imageGallery = document.getElementById('imageGallery');
-    const descriptionGallery = document.getElementById('descriptionGallery');
-    let uploadedImages = [];
 
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
@@ -99,29 +80,15 @@
 
         const result = await response.json();
         imageGallery.innerHTML = '';
-        descriptionGallery.innerHTML = '';
 
-        // Store the uploaded images and show them
+        // Display uploaded images and their descriptions
         result.descriptions.forEach(({filename, description}) => {
-            uploadedImages.push({filename, description}); // Store uploaded images and descriptions
             const img = document.createElement('img');
             img.src = `static/uploads/${filename}`; // Path to the uploaded image
-            imageGallery.appendChild(img);
-        });
-
-        // Show the description button once images are uploaded
-        document.getElementById('describeButton').style.display = 'block';
-    };
-
-    document.getElementById('describeButton').onclick = () => {
-        // Clear previous descriptions
-        descriptionGallery.innerHTML = '';
-
-        // Display the stored descriptions
-        uploadedImages.forEach(({description}) => {
             const div = document.createElement('div');
             div.textContent = description; // Display the description of the image
-            descriptionGallery.appendChild(div);
+            imageGallery.appendChild(img);
+            imageGallery.appendChild(div);
         });
     };
 </script>
