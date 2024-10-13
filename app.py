@@ -1,16 +1,15 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, jsonify, render_template
 import os
-import torch
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
 
 app = Flask(__name__)
 
-# Load the BLIP model and processor
+# Load BLIP model and processor
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
-# Set the upload folder
+# Set the folder for uploaded images
 UPLOAD_FOLDER = 'static/uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -21,11 +20,11 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    descriptions = []
     if 'images' not in request.files:
         return "No images uploaded", 400
 
     images = request.files.getlist('images')
-    descriptions = []
 
     for img in images:
         if img:
@@ -34,15 +33,23 @@ def upload():
 
             # Load and preprocess the image
             image = Image.open(img_path).convert("RGB")
-
-            # Preprocess the image and generate caption
             inputs = processor(images=image, return_tensors="pt")
-            out = model.generate(**inputs)
+            
+            # Generate a longer description with increased max_length and beam search
+            out = model.generate(**inputs, 
+                                max_length=200,          # Increase the max length of the description
+                                min_length=100,          # Ensure the output is at least 100 tokens
+                                num_beams=5,             # Use beam search to improve description quality
+                                temperature=1.2,         # Control randomness for more coherent output
+                                early_stopping=False,    # Prevent early stopping
+                                no_repeat_ngram_size=2,  # Avoid repeating bigrams
+                                repetition_penalty=1.2   # Penalize repetitions for diverse output
+            )
+            # Generate description
             description = processor.decode(out[0], skip_special_tokens=True)
-
             descriptions.append({"filename": img.filename, "description": description})
 
-    return {"descriptions": descriptions}
+    return jsonify({"descriptions": descriptions})
 
 if __name__ == '__main__':
     app.run(debug=True)
