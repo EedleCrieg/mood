@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: left; /* Left justify all content */
+}
+
+.container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.column {
+    
+    width: 300px; /* Set max width for each column */
+    padding: 10px;
+    margin-right: 20px; /* Add some spacing between columns */
+}
+
+.column img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+}
+
+.button.active {
+    background-color: #007BFF;
+    cursor: pointer;
+}
+
+.button.active:hover {
+    background-color: #0056b3;
+}
+
+.gallery, .descriptions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.gallery img {
+    display: block;
+}
+
+.image-label {
+    font-weight: bold;
+}
+
+.descriptions div {
+    margin-bottom: 10px;
+}
+
+#counter {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.checkbox-description {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-description input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.paragraph-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.generated-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid */
+    gap: 10px; /* Spacing between images */
+    margin-top: 20px;
+}
+
+.generated-images img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+.header {
+    height: 100px;
+    background-color: #f4f4f4; /* Light grey background */
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333; /* Darker color for header */
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+    color: #666; /* Lighter color for subheader */
+}
