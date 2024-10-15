@@ -20,7 +20,7 @@ def generate_images(prompt):
     # Generate images from the prompt
     for i in range(5):  # Generate 5 images
         with torch.no_grad():
-            image = pipe(prompt, num_inference_steps=50, guidance_scale=7.5).images[0]
+            image = pipe(prompt, num_inference_steps=20, guidance_scale=7.5).images[0]
 
         # Save the generated image
         image_path = os.path.join(GENERATED_FOLDER, f"generated_image_{i + 1}.png")

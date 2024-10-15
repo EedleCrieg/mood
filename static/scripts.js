@@ -109,6 +109,7 @@ function shuffleArray(array) {
     return array;
 }
 
+
 // Generate images and display them in the gallery
 generateImagesButton.onclick = async () => {
     const remixedDescription = remixedParagraph.innerText;
@@ -123,23 +124,51 @@ generateImagesButton.onclick = async () => {
         body: JSON.stringify({ prompt: remixedDescription }),
     });
 
+    // don't call this at the end
+    /*
     const result = await response.json();
     if (result.success) {
         loadGeneratedImages(); // Load the generated images after creation
     } else {
         alert("Error generating images: " + result.error);
     }
+        */
 };
 
-// Function to load generated images from the server
-async function loadGeneratedImages() {
-    const response = await fetch('/generated-images');
-    const images = await response.json();
-    generatedImagesGallery.innerHTML = ''; // Clear previous images
+// Generate the grid of images and 
+generateGridButton.onclick = async () => {
+    loadGeneratedImages(); 
+}
 
-    images.forEach(image => {
-        const imgElement = document.createElement('img');
-        imgElement.src = `static/generated/${image}`; // Update path to generated images
-        generatedImagesGallery.appendChild(imgElement);
+// Function to load generated images from the server
+function loadGeneratedImages() {
+    // The folder where images are stored
+    const generatedFolder = "/static/generated/";
+
+    // Example image filenames; you would typically get this dynamically, 
+    // but for simplicity, let's assume we are generating 5 images.
+    const imageFilenames = ["generated_image_1.png", "generated_image_2.png", "generated_image_3.png", "generated_image_4.png", "generated_image_5.png"];
+    
+    // The div where the images will be displayed
+    const gridContainer = document.getElementById("imageGrid");
+    
+    // Clear the grid container first
+    gridContainer.innerHTML = "";
+
+    // Loop through image filenames and create image elements
+    imageFilenames.forEach((filename) => {
+        const img = document.createElement("img");
+        img.src = generatedFolder + filename;  // Set the image source
+        img.alt = filename;                    // Set alt text for accessibility
+        img.style.width = "100%";              // Optional: Adjust the image size to fit grid cells
+        img.style.maxWidth = "300px";          // Set max width to fit the grid
+
+        // Create a div to wrap each image for grid layout
+        const imageDiv = document.createElement("div");
+        imageDiv.classList.add("grid-item");    // Add a class for grid styling
+        imageDiv.appendChild(img);
+
+        // Add the image div to the grid container
+        gridContainer.appendChild(imageDiv);
     });
 }

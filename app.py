@@ -41,11 +41,11 @@ def upload():
             
             # Generate a longer description with increased max_length and beam search
             out = model.generate(**inputs, 
-                                max_length=80,          # Increase the max length of the description
-                                min_length=50,          # Ensure the output is at least 100 tokens
-                                num_beams=3,             # Use beam search to improve description quality
-                                temperature=1.2,         # Control randomness for more coherent output
-                                early_stopping=True,    # Prevent early stopping
+                                max_length=60,          # Increase the max length of the description
+                                min_length=30,          # Ensure the output is at least 100 tokens
+                                num_beams=1,             # Use beam search to improve description quality
+                                #temperature=1.2,         # Control randomness for more coherent output
+                                early_stopping=False,    # Prevent early stopping
                                 no_repeat_ngram_size=2,  # Avoid repeating bigrams
                                 repetition_penalty=1.2   # Penalize repetitions for diverse output
             )

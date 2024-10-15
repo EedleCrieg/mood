@@ -96,12 +96,12 @@ body {
 }
 
 .header {
-    height: 100px;
+    height: auto;
     background-color: #f4f4f4; /* Light grey background */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: left;
-    align-items: left;
+    align-items: center;
     text-align: left;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
@@ -109,14 +109,28 @@ body {
 
 .header h1 {
     margin: 0;
-    font-size: 36px;
+    font-size: 72px;
     font-weight: bold;
     color: #333; /* Darker color for header */
 }
 
 .header h2 {
     margin: 0;
+    margin-left: 10px;
     font-size: 16px;
     font-weight: normal;
     color: #666; /* Lighter color for subheader */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust grid columns */
+    grid-gap: 10px;  /* Gap between grid items */
+    margin-top: 20px;
+}
+
+.grid-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -10,7 +10,8 @@
 
         <div class="header">
             <h1>MOOD</h1>
-            <h2>Your personalized AI-powered image generation and remixing tool</h2>
+            <div> <h2>Your personalized AI-powered <br> moodboard, storyboard, concept board, title treatment generator</h2> </div>
+            
         </div>
 
         <div class="container">
@@ -18,9 +19,10 @@
             <div class="column">
                 <h2>Images</h2>
                 <form id="uploadForm" method="post" enctype="multipart/form-data">
+                    <div class="button" id="generateButton">Generate Descriptions</div>
                     <input type="file" id="imageUpload" name="images" multiple accept="image/*">
                     <div id="counter">0/5 images uploaded</div>
-                    <div class="button" id="generateButton">Generate Descriptions</div>
+                    
                 </form>
                 <div class="gallery" id="imageGallery"></div>
             </div>
@@ -28,26 +30,40 @@
             <!-- Column for descriptions -->
             <div class="column">
                 <h2>Descriptions</h2>
+                <div class="button active" id="remixButton">Remix Descriptions</div>
+
                 <div class="descriptions" id="descriptionColumn"></div>
 
-                <div class="button active" id="remixButton">Remix Descriptions</div>
+                
             </div>
 
             <!-- New column for remixed descriptions -->
             <div class="column">
                 <h2>Remixed Description</h2>
-                <div class="paragraph-container" id="remixedParagraph"></div>
-                
+
                 <!-- Button to generate images -->
                 <div class="button active" id="generateImagesButton">Generate Images</div>
+
+                <div class="paragraph-container" id="remixedParagraph"></div>
+                
+                
             </div>
 
             <!-- New column for remixed descriptions -->
             <div class="column">
                 <h2>Generated Images</h2>
-                <div class="generated-images" id="generatedImagesGallery"></div>
+                <!-- Button to load generated images -->
+                <div class="button active" id="generateGridButton">Generate Grid</div>
+                 <!-- Grid container where images will be displayed -->
+                <div id="imageGrid" class="grid-container"></div>
+                <!-- <div class="generated-images" id="generatedImagesGallery"></div> -->
             </div>
         </div>
+
+        
+        
+        
+       
 
         
        
